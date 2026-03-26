@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Tasks - Solution</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f9; line-height: 1.6; }
+        section { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        /* Task 3: Interactive List */
+        #itemList { margin-top: 10px; }
+        .delete-btn { margin-left: 10px; color: white; background: #ff4d4d; border: none; padding: 2px 8px; cursor: pointer; border-radius: 4px; }
+
+        /* Task 4: Color Changer Cards */
+        .card-container { display: flex; gap: 10px; }
+        .card { width: 100px; height: 100px; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; border-radius: 8px; }
+        .card.active { background-color: #4CAF50; color: white; border-color: #2e7d32; }
+
+        /* Task 5: Toggle Visibility */
+        .hidden { display: none; }
+        #contentSection { padding: 10px; background: #e3f2fd; margin-top: 10px; border-left: 4px solid #2196f3; }
+
+        /* Task 6: Counter */
+        .counter-val { font-size: 2rem; font-weight: bold; margin: 0 15px; }
+        .positive { color: green; }
+        .negative { color: red; }
+        .zero { color: black; }
+        button { padding: 8px 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <section>
+        <h2>Task 3: Interactive List</h2>
+        <input type="text" id="itemInput" placeholder="Enter item...">
+        <button id="addBtn">Add Item</button>
+        <ul id="itemList"></ul>
+    </section>
+
+    <section>
+        <h2>Task 4: Color Changer Cards</h2>
+        <div class="card-container">
+            <div class="card">Card 1</div>
+            <div class="card">Card 2</div>
+            <div class="card">Card 3</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Task 5: Toggle Visibility</h2>
+        <button id="toggleBtn">Toggle Section</button>
+        <div id="contentSection">Hello! I am the toggleable content.</div>
+    </section>
+
+    <section>
+        <h2>Task 6: Counter</h2>
+        <button class="counter-control" id="minus">-</button>
+        <span id="counter" class="counter-val zero">0</span>
+        <button class="counter-control" id="plus">+</button>
+    </section>
+
+    <script>
+        // --- Task 3: Interactive List (Event Delegation) ---
+        const input = document.getElementById('itemInput');
+        const addBtn = document.getElementById('addBtn');
+        const list = document.getElementById('itemList');
+
+        addBtn.addEventListener('click', () => {
+            if (input.value.trim() === "") return;
+            const li = document.createElement('li');
+            li.innerHTML = `${input.value} <button class="delete-btn">Delete</button>`;
+            list.appendChild(li);
+            input.value = '';
+        });
+
+        // Delegation: Listen on UL, check for delete-btn class
+        list.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                e.target.parentElement.remove();
+            }
+        });
+
+        // --- Task 4: Color Changer Cards ---
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            });
+        });
+
+        // --- Task 5: Toggle Visibility ---
+        const toggleBtn = document.getElementById('toggleBtn');
+        const section = document.getElementById('contentSection');
+        
+        toggleBtn.addEventListener('click', () => {
+            section.classList.toggle('hidden');
+        });
+
+        // --- Task 6: Counter with Styling ---
+        let count = 0;
+        const counterDisplay = document.getElementById('counter');
+        const controlBtns = document.querySelectorAll('.counter-control');
+
+        controlBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.id === 'plus') count++;
+                else count--;
+
+                counterDisplay.textContent = count;
+
+                // Update styling via classList
+                counterDisplay.classList.remove('positive', 'negative', 'zero');
+                if (count > 0) counterDisplay.classList.add('positive');
+                else if (count < 0) counterDisplay.classList.add('negative');
+                else counterDisplay.classList.add('zero');
+            });
+        });
+    </script>
+</body>
+</html>

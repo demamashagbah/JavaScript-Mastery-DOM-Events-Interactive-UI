@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> my page</title>
+    </head>
+</html>
+<body>
+    <input type ="text" id ="input_text" placeholder="Type any thing here ">
+    <p id ="preview"> text will appear here </p>
+    <script>
+        const input = document.getElementById('input_text');
+        const text = document.getElementById('preview');
+        input.addEventListener('input',function  (event) {
+        text.textContent = event.target.value;
+    });
+    </script>
+</body>
